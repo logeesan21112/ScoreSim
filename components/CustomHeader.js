@@ -15,14 +15,15 @@ const styles = StyleSheet.create({
   headerContainer: {
     flex: 0,
     backgroundColor: Config.primaryColor,
-    paddingVertical: 15,
-    paddingHorizontal: 25,
+    paddingVertical: 35,
+    paddingHorizontal: 35,
     borderBottomWidth: 5,
     borderBottomColor: Config.accentColor,
+    justifyContent: 'center',
   },
   screenTitle: {
     color: '#ffffff',
-    fontSize: 20,
+    fontSize: 22,
     fontWeight: 'bold',
   },
 });

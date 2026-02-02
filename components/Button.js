@@ -1,5 +1,6 @@
 import React from 'react';
 import { TouchableOpacity, Text, StyleSheet } from 'react-native';
+import Config from '../common/config';
 
 const Button = ({ title, onPress }) => (
   <TouchableOpacity style={styles.button} onPress={onPress}>
@@ -9,8 +10,8 @@ const Button = ({ title, onPress }) => (
 
 const styles = StyleSheet.create({
   button: {
-    backgroundColor: '#2196F3',
-    borderRadius: 10,
+    backgroundColor: Config.primaryColor,
+    borderRadius: 50,
     paddingVertical: 15,
     paddingHorizontal: 20,
     marginVertical: 10,

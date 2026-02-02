@@ -1,37 +1,75 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import Config from '../common/config';
 
-import UpcomingMatches from '../screens/UpcomingMatches';
-import MyBets from '../screens/MyBets';
-import Wallet from '../screens/Wallet';
+import UpcomingMatches from '../screens/Main/UpcomingMatches';
+import LiveScore from '../screens/Main/LiveScore';
 import Profile from '../screens/Profile';
+import { View } from 'react-native';
 
 const Tab = createBottomTabNavigator();
+
+function LogoutScreen({ navigation }) {
+  useEffect(() => {
+    navigation.replace('Login');
+  }, []);
+
+  return <View />;
+}
 
 export default function BottomTabs() {
   return (
     <Tab.Navigator
-      screenOptions={({ route }) => ({
+      screenOptions={{
         headerShown: false,
         tabBarActiveTintColor: Config.primaryColor,
-        tabBarInactiveTintColor: '#666666',
-        tabBarStyle: { backgroundColor: 'white', borderTopWidth: 0, elevation: 5 },
-        tabBarIcon: ({ color, size }) => {
-          let iconName;
-          if (route.name === 'UpcomingMatches') iconName = 'home';
-          else if (route.name === 'MyBets') iconName = 'ticket';
-          else if (route.name === 'Wallet') iconName = 'wallet';
-          else if (route.name === 'Profile') iconName = 'dots-vertical';
-          return <Icon name={iconName} size={24} color={color} />;
-        },
-      })}
+        tabBarInactiveTintColor: '#666',
+      }}
     >
-      <Tab.Screen name="UpcomingMatches" component={UpcomingMatches} />
-      <Tab.Screen name="MyBets" component={MyBets} />
-      <Tab.Screen name="Wallet" component={Wallet} />
-      <Tab.Screen name="Profile" component={Profile} />
+      <Tab.Screen
+        name="Matches"
+        component={UpcomingMatches}
+        options={{
+          tabBarLabel: 'Matches',
+          tabBarIcon: ({ color, size }) => (
+            <MaterialCommunityIcons name="home" size={size} color={color} />
+          ),
+        }}
+      />
+
+      <Tab.Screen
+        name="Live"
+        component={LiveScore}
+        options={{
+          tabBarLabel: 'Live',
+          tabBarIcon: ({ color, size }) => (
+            <MaterialCommunityIcons name="cricket" size={size} color={color} />
+          ),
+        }}
+      />
+
+      <Tab.Screen
+        name="Profile"
+        component={Profile}
+        options={{
+          tabBarLabel: 'Profile',
+          tabBarIcon: ({ color, size }) => (
+            <MaterialCommunityIcons name="account" size={size} color={color} />
+          ),
+        }}
+      />
+
+      <Tab.Screen
+        name="Logout"
+        component={LogoutScreen}
+        options={{
+          tabBarLabel: 'Logout',
+          tabBarIcon: ({ color, size }) => (
+            <MaterialCommunityIcons name="logout" size={size} color={color} />
+          ),
+        }}
+      />
     </Tab.Navigator>
   );
 }

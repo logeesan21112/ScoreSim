@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   Image,
 } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import Config from '../common/config';
 import CustomTextInput from '../components/CustomTextInput';
 import Button from '../components/Button';
@@ -18,11 +19,26 @@ const Login = ({ navigation }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
-  const handleLogin = () => {
-  navigation.navigate('LiveScore');
-};
+  const handleLogin = async () => {
+    try {
+      const storedUser = await AsyncStorage.getItem('user');
 
+      if (!storedUser) {
+        alert('No user found. Please register first.');
+        return;
+      }
 
+      const user = JSON.parse(storedUser);
+
+      if (username === user.username && password === user.password) {
+        navigation.replace('Main');
+      } else {
+        alert('Invalid username or password');
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <View style={styles.loginContainer}>
@@ -48,7 +64,7 @@ const Login = ({ navigation }) => {
             secureTextEntry
           />
 
-          <TouchableOpacity onPress={() => navigation?.navigate?.('Register')}>
+          <TouchableOpacity onPress={() => navigation.navigate('Register')}>
             <Text style={styles.forgotPassword}>
               Don't have an account? Register!
             </Text>
@@ -92,6 +108,7 @@ const styles = StyleSheet.create({
     color: Config.primaryColor,
     fontSize: 18,
     marginVertical: 20,
+    fontWeight: '400',
   },
   logo: {
     width: width / 2,

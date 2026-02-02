@@ -6,7 +6,9 @@ import {
   Dimensions,
   StyleSheet,
   TouchableOpacity,
+  Image,
 } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import Config from '../common/config';
 import CustomTextInput from '../components/CustomTextInput';
 import Button from '../components/Button';
@@ -19,15 +21,36 @@ const Register = ({ navigation }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const handleRegister = () => {
-    console.log('Register pressed (UI only)');
+  const handleRegister = async () => {
+    if (!username || !password) {
+      alert('Username and password are required');
+      return;
+    }
+
+    const userData = {
+      name,
+      username,
+      email,
+      password,
+    };
+
+    try {
+      await AsyncStorage.setItem('user', JSON.stringify(userData));
+      alert('Registered successfully!');
+      navigation.navigate('Login');
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
     <View style={styles.registerContainer}>
       <ScrollView>
         <View style={styles.headerTitleBG}>
-          <Text style={styles.headerTitle}>Register New Account.</Text>
+          <Image
+            style={styles.logo}
+            source={require('../assets/logo.png')}
+          />
         </View>
 
         <View style={styles.registerForm}>
@@ -82,12 +105,6 @@ const styles = StyleSheet.create({
     paddingVertical: 20,
     paddingHorizontal: 30,
   },
-  headerTitle: {
-    color: '#ffffff',
-    fontSize: 24,
-    fontWeight: 'bold',
-    paddingTop: '30%',
-  },
   registerForm: {
     backgroundColor: '#ffffff',
     marginTop: -50,
@@ -104,5 +121,10 @@ const styles = StyleSheet.create({
     color: Config.primaryColor,
     fontSize: 18,
     marginVertical: 20,
+  },
+  logo: {
+    width: '100%',
+    height: '100%',
+    resizeMode: 'contain',
   },
 });
